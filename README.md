@@ -42,15 +42,35 @@
 样例见 [`skills/x-daily-digest/examples/demo-2026-10-14.html`](skills/x-daily-digest/examples/demo-2026-10-14.html)
 （2026-10-14 实跑：181 条去重样本 → 筛出 35 条）。
 
+在线预览：<https://ghao0630-droid.github.io/x-daily-digest/skills/x-daily-digest/examples/demo-2026-10-14.html>
+
 ---
 
 ## 安装
 
 ```sh
-npx skills add ghao0630-droid/x-daily-digest
+# 非交互环境必须显式给 --agent 和 -y；Windows 必须 --copy（符号链接要开发者模式）
+npx --yes skills@latest add ghao0630-droid/x-daily-digest \
+  --skill x-daily-digest --agent codebuddy -y --copy
 ```
 
-或手动把 `skills/x-daily-digest/` 整个目录拷进你的 skills 目录：
+> **WorkBuddy 用户注意：** `skills` CLI 的 agent 列表里**没有 workbuddy**，
+> 上面的命令只会装到 `.codebuddy/skills`。WorkBuddy 只读 `.workbuddy-ai/skills/`，
+> 所以装完还要镜像一份，否则命令 exit 0 但技能永远不生效：
+>
+> ```sh
+> mkdir -p ~/.workbuddy-ai/skills
+> cp -r .codebuddy/skills/x-daily-digest ~/.workbuddy-ai/skills/
+> ```
+
+不想用 CLI 的话，直接拷目录也行：
+
+```sh
+git clone https://github.com/ghao0630-droid/x-daily-digest
+cp -r x-daily-digest/skills/x-daily-digest ~/.workbuddy-ai/skills/
+```
+
+落点二选一：
 
 - 用户级（所有项目可用）：`~/.workbuddy-ai/skills/`
 - 项目级（仅当前项目）：`<项目>/.workbuddy-ai/skills/`
