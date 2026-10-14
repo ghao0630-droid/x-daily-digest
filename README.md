@@ -137,6 +137,8 @@ bsk session stop "$SID"
 ├── README.md
 ├── NOTICE.md
 ├── package.json
+├── index.html                          GitHub Pages 落地页
+├── .nojekyll                           关掉 Jekyll，Pages 直接按文件服务
 ├── skills/
 │   └── x-daily-digest/
 │       ├── SKILL.md                    完整工作流（给 AI 读）

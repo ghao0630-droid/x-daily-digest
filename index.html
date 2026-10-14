@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>X 日报 Skill</title>
+<style>
+  :root{
+    --brand:#002fa7;          /* 克莱因蓝 */
+    --brand-deep:#001f6f;
+    --yellow:#ffd400;
+    --yellow-deep:#8a6a00;    /* 浅底上的可读黄 */
+    --paper:#f8f9fc;
+    --ink:#0e1526;
+    --line:#d8dde9;
+    --muted:#5b6579;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;border-radius:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--paper);color:var(--ink);
+    font:16px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","Microsoft YaHei",sans-serif;
+    padding-top:9px;                     /* 让双色条不压住内容 */
+  }
+  /* 主色调一屏定调：6px 蓝 + 3px 黄 */
+  body::before{
+    content:"";position:fixed;top:0;left:0;right:0;height:6px;
+    background:var(--brand);z-index:9;
+  }
+  body::after{
+    content:"";position:fixed;top:6px;left:0;right:0;height:3px;
+    background:var(--yellow);z-index:9;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:56px 24px 72px}
+
+  .kicker{
+    font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--brand);
+    margin-bottom:18px;
+  }
+  h1{
+    font-size:40px;line-height:1.15;letter-spacing:-.01em;font-weight:800;
+    margin-bottom:14px;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(transparent 62%, var(--yellow) 62%);
+    padding:0 2px;
+  }
+  .sub{font-size:17px;color:var(--muted);max-width:56ch;margin-bottom:8px}
+  .claim{
+    border-left:3px solid var(--brand);
+    padding:2px 0 2px 14px;margin:26px 0 34px;
+    font-size:16px;color:var(--ink);
+  }
+  .claim b{color:var(--brand-deep)}
+
+  .actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:52px}
+  a.btn{
+    display:inline-block;padding:11px 20px;text-decoration:none;
+    font-weight:700;font-size:15px;line-height:1;
+    border:1px solid var(--brand);color:#fff;background:var(--brand);
+  }
+  a.btn:hover{background:var(--brand-deep);border-color:var(--brand-deep)}
+  a.btn.ghost{background:transparent;color:var(--brand)}
+  a.btn.ghost:hover{background:var(--brand);color:#fff}
+
+  h2{
+    font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--brand);font-weight:700;
+    border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:20px;
+  }
+  ol{list-style:none;counter-reset:n}
+  ol li{
+    counter-increment:n;position:relative;
+    padding:14px 0 14px 46px;border-bottom:1px solid var(--line);
+  }
+  ol li:last-child{border-bottom:0}
+  ol li::before{
+    content:counter(n,decimal-leading-zero);
+    position:absolute;left:0;top:14px;
+    font:600 15px/1.75 Georgia,"Times New Roman",serif;
+    color:var(--brand);opacity:.55;
+  }
+  ol li strong{display:block;font-size:16px;margin-bottom:2px}
+  ol li span{color:var(--muted);font-size:14.5px}
+
+  .foot{
+    margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:13.5px;color:var(--muted);
+  }
+  .foot a{color:var(--brand)}
+  @media (max-width:640px){
+    .wrap{padding:40px 18px 56px}
+    h1{font-size:29px}
+    .sub{font-size:15.5px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Skill / 2026</p>
+
+  <h1>X 日报 <em>Skill</em></h1>
+  <p class="sub">从你已登录的 X 里，把当天真实的高互动帖子连正文带直链捞出来，筛掉噪音，产出一份可读的 HTML 日报。</p>
+
+  <p class="claim"><b>核心判据：可复用信息密度 &gt; 互动量。</b>互动高的帖子常常是垃圾。<br>这个 skill 的价值不在「抓得多」，而在「扔得准」。</p>
+
+  <div class="actions">
+    <a class="btn" href="skills/x-daily-digest/examples/demo-2026-10-14.html">看真实样例 →</a>
+    <a class="btn ghost" href="https://github.com/ghao0630-droid/x-daily-digest">GitHub 仓库</a>
+  </div>
+
+  <h2>它做三件事</h2>
+  <ol>
+    <li><strong>边滚边抓</strong><span>X 是虚拟列表，滚过去的帖子会从 DOM 消失、永久链接一起没。所以必须每滚一屏抓一次，而不是先滚完再抓。</span></li>
+    <li><strong>按可复用价值筛选</strong><span>不是按互动量。优先留有量化数据、给可复现条件、做系统性对比、记录踩坑的帖子。</span></li>
+    <li><strong>产出 HTML 日报</strong><span>并在页面上明说扔掉了什么、样本有多少、以及「这是个性化推荐流不是全网热榜」这条局限。</span></li>
+  </ol>
+
+  <p class="foot">
+    样例：2026-10-14 实跑，181 条去重样本 → 筛出 35 条（噪音率约 80%）。<br>
+    依赖 <a href="https://github.com/Tencent/BrowserSkill">BrowserSkill</a> 与 Python 3。安装与用法见
+    <a href="https://github.com/ghao0630-droid/x-daily-digest#readme">README</a>。
+  </p>
+
+</div>
+</body>
+</html>

@@ -45,6 +45,7 @@ const required = [
   'NOTICE.md',
   'package.json',
   '.gitignore',
+  'index.html',
   'skills/x-daily-digest/SKILL.md',
   'skills/x-daily-digest/scripts/grab.sh',
   'skills/x-daily-digest/scripts/parse.py',
