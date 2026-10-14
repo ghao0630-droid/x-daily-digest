@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 值得学习内容日报 · {{DATE}}</title>
+<!--
+  模板占位符清单（替换完请把这些注释一并删掉，避免自查时误判）
+  {{DATE}}            日期，如 2026-10-14
+  {{TIME_RANGE}}      采集时间窗口，如 20:20–20:25 GMT+8
+  {{SOURCES}}         数据源说明，如「首页推荐流 ×2 轮 + 4 个关键词搜索页」
+  {{N_SAMPLE}}        去重样本数
+  {{N_PICKED}}        入选条目数
+  {{NOISE_PCT}}       噪音占比
+  {{N_ROUNDS}}        采集轮次
+  {{T3_TITLE_i}}      今日最值钱第 i 条标题
+  {{T3_URL_i}}        对应原文链接
+  {{T3_TAG_i}}        对应标签（4 字以内）
+  {{TOC_i_NAME}}      第 i 组导航名
+  {{LEDE}}            一句话结论
+  {{GROUP_TITLE_i}}   第 i 组标题
+  {{GROUP_TAG_i}}     第 i 组角标
+  {{GROUP_NOTE_i}}    第 i 组导语
+  {{CARD_TITLE}}      卡片标题（你的提炼，不是原帖标题）
+  {{CARD_URL}}        原文链接
+  {{CARD_WHY}}        为什么值得学
+  {{CARD_HANDLE}}     作者 @handle
+  {{CARD_STAT}}       互动数据快照
+  {{CARD_PILL}}       价值标签文字
+  {{PILL_CLASS}}      p-hot | p-warm | p-cool
+  {{SKIP_TEXT}}       已被扔掉的噪音说明
+  {{FOOTER_LIMITS}}   采集口径与局限
+-->
+<style>
+  /* ============ editorial skin / brand: International Klein Blue + Yellow ============ */
+  :root{
+    --paper:#f8f9fc;
+    --ink:#0e1526;
+    --ink-2:#525b70;
+    --ink-3:#98a1b5;
+    --rule:#e3e7f1;
+
+    --brand:#002fa7;          /* IKB */
+    --brand-deep:#001e6b;
+    --brand-soft:#e6ebf7;
+    --brand-tint:#f2f5fc;
+
+    --yellow:#ffd400;
+    --yellow-soft:#fff6cc;
+    --yellow-deep:#8a6a00;
+    --neutral-ink:#8a93a6;
+
+    --serif:Georgia,"Times New Roman","Songti SC","SimSun",serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; color:var(--ink);
+    background-color:var(--paper);
+    background-image:linear-gradient(180deg,#e9eefb 0%,rgba(248,249,252,0) 520px);
+    background-repeat:no-repeat;
+    font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:15px; line-height:1.72; -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:""; display:block; height:9px;
+    background:linear-gradient(180deg,var(--brand) 0 6px,var(--yellow) 6px 9px);
+  }
+  .wrap{max-width:980px; margin:0 auto; padding:0 32px 88px; counter-reset:cardn}
+
+  /* masthead */
+  header{padding:24px 0 0}
+  .brand{display:flex; align-items:flex-start; gap:18px}
+  .brand-mark{
+    width:54px; height:54px; flex:none; border-radius:0;
+    background:var(--brand); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--serif); font-size:27px; line-height:1; letter-spacing:-1px;
+  }
+  h1{font-size:40px; font-weight:800; letter-spacing:-1.6px; line-height:1.08; margin:0}
+  .sub{display:flex; align-items:center; font-size:10.5px; letter-spacing:1.5px; color:var(--ink-3); margin-top:12px}
+  .sub span{padding:0 12px; border-left:1px solid var(--rule)}
+  .sub span:first-child{padding:2px 8px; border-left:0; color:#fff; background:var(--brand); font-weight:700}
+  .src{margin-top:20px; padding-left:14px; border-left:2px solid var(--brand); font-size:12px; color:var(--ink-2); line-height:1.7}
+
+  /* figures strip */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); margin-top:30px;
+    border-top:1px solid var(--brand); border-bottom:1px solid var(--brand)}
+  .metric{padding:16px 0 14px; border-left:1px solid var(--rule)}
+  .metric:first-child{border-left:0}
+  .metric + .metric{padding-left:22px}
+  .metric b{display:block; font-family:var(--serif); font-weight:400; font-size:36px;
+    line-height:1; letter-spacing:-1.5px; font-variant-numeric:tabular-nums; color:var(--brand)}
+  .metric span{display:block; margin-top:8px; font-size:10.5px; letter-spacing:1.3px; color:var(--ink-3)}
+
+  /* top 3 */
+  .top3{margin-top:38px}
+  .top3-h{display:flex; justify-content:space-between; align-items:baseline; font-size:11px;
+    font-weight:800; letter-spacing:1.8px; padding-bottom:11px; border-bottom:3px solid var(--yellow)}
+  .top3-h span{font-size:11px; font-weight:400; letter-spacing:.6px; color:var(--ink-3)}
+  .top3-list{margin:0; padding:0; list-style:none; counter-reset:t3}
+  .top3-list li{counter-increment:t3; display:grid; grid-template-columns:54px 1fr auto;
+    align-items:baseline; gap:0 16px; padding:16px 0; border-bottom:1px solid var(--rule)}
+  .top3-list li::before{content:counter(t3,decimal-leading-zero); font-family:var(--serif);
+    font-size:25px; line-height:1; letter-spacing:-1px; color:var(--brand)}
+  .top3-list a{font-size:14.5px; font-weight:600; color:var(--ink); text-decoration:none; letter-spacing:-.1px}
+  .top3-list a:hover{color:var(--brand)}
+  .top3-tag{justify-self:end; font-size:10px; letter-spacing:.8px; font-weight:700;
+    color:var(--yellow-deep); background:var(--yellow-soft); padding:3px 9px}
+
+  /* sticky nav */
+  .toc{position:sticky; top:0; z-index:30; margin:40px -32px 0; padding:0 32px;
+    display:flex; gap:0; overflow-x:auto; scrollbar-width:none;
+    background:rgba(248,249,252,.96);
+    border-top:1px solid var(--brand); border-bottom:1px solid var(--brand)}
+  .toc::-webkit-scrollbar{display:none}
+  .toc a{flex:none; font-size:11.5px; letter-spacing:.3px; color:var(--ink-2); text-decoration:none;
+    padding:12px 18px; white-space:nowrap; border-bottom:2px solid transparent; margin-bottom:-1px; transition:.15s}
+  .toc a b{font-family:var(--serif); font-weight:400; color:var(--brand); margin-right:7px; font-size:12px}
+  .toc a:hover{color:var(--ink); border-bottom-color:var(--yellow); background:#fff}
+
+  /* lede */
+  .lede{margin:34px 0 0; padding:16px 20px 16px 24px; border-left:3px solid var(--brand);
+    background:var(--brand-tint); font-size:15.5px; line-height:1.88; color:var(--ink-2)}
+  .lede b{color:var(--ink); font-weight:700}
+
+  /* group heads */
+  h2{position:relative; display:block; margin:64px 0 0; padding:0 0 13px;
+    border-bottom:2px solid var(--brand); font-size:20px; font-weight:800;
+    letter-spacing:-.4px; scroll-margin-top:52px}
+  h2 .gnum{position:absolute; right:0; top:-30px; font-family:var(--serif); font-weight:400;
+    font-size:76px; line-height:1; letter-spacing:-4px; color:rgba(0,47,167,.12); pointer-events:none}
+  h2 .tag{display:inline-block; vertical-align:2px; margin-left:12px; font-size:10px;
+    font-weight:700; letter-spacing:1.2px; padding:3px 9px; background:var(--brand); color:#fff}
+  .secnote{font-size:12.5px; line-height:1.8; color:var(--ink-3); margin:14px 0 4px}
+
+  /* cards */
+  .card{counter-increment:cardn; display:grid; grid-template-columns:50px 1fr;
+    padding:19px 0 17px; border-bottom:1px solid var(--rule);
+    transition:box-shadow .18s, background-color .18s}
+  .card::before{content:counter(cardn,decimal-leading-zero); grid-column:1; grid-row:1;
+    font-family:var(--serif); font-size:22px; line-height:1.35; letter-spacing:-.8px;
+    color:var(--ink-3); transition:color .18s}
+  .card > *{grid-column:2}
+  .card:has(.p-hot)::before{color:var(--brand)}
+  .card:has(.p-warm)::before{color:#b8912a}
+  .card:has(.p-cool)::before{color:var(--neutral-ink)}
+  .card:hover{box-shadow:inset 3px 0 0 var(--brand); background-color:#fbfcff}
+  .card h3{font-size:15px; font-weight:700; margin:0 0 8px; line-height:1.55; letter-spacing:-.2px}
+  .card h3 a{color:var(--ink); text-decoration:none; border-bottom:1px solid #cfd6e6}
+  .card h3 a:hover{color:var(--brand); border-bottom-color:var(--brand)}
+  .why{font-size:13.5px; color:var(--ink-2); margin:0 0 11px; line-height:1.8}
+  .why b{color:var(--ink); font-weight:700;
+    background:linear-gradient(transparent 70%, #ffe89a 70%); padding:0 1px}
+  .why code{font-family:Consolas,"Liberation Mono",Menlo,monospace; background:#eef1f8;
+    padding:1px 5px; font-size:12px; border-radius:2px}
+  .meta{display:flex; flex-wrap:wrap; gap:7px 14px; align-items:center; font-size:11.5px; color:var(--ink-3)}
+  .handle{color:var(--ink); font-weight:700}
+  .stat{font-variant-numeric:tabular-nums}
+  .pill{font-size:10px; letter-spacing:.7px; font-weight:700; padding:3px 9px; border:1px solid transparent}
+  .p-hot{background:var(--brand); color:#fff}
+  .p-warm{background:var(--yellow-soft); color:var(--yellow-deep)}
+  .p-cool{background:#fff; border-color:#ccd3e2; color:var(--neutral-ink)}
+
+  /* skip / footer */
+  .skip{margin-top:52px; padding:22px 0 0; border-top:1px solid var(--ink);
+    font-size:12.5px; line-height:1.85; color:var(--ink-3)}
+  .skip b{color:var(--ink-2)}
+  footer{margin-top:44px; padding-top:20px; border-top:1px solid var(--brand-soft);
+    font-size:11.5px; line-height:1.9; color:var(--ink-3)}
+  footer code{font-family:Consolas,"Liberation Mono",Menlo,monospace; font-size:11px; color:var(--ink-2)}
+
+  @media (max-width:680px){
+    .wrap{padding:0 18px 64px}
+    h1{font-size:27px; letter-spacing:-.9px}
+    .brand-mark{width:42px; height:42px; font-size:21px}
+    .sub{flex-wrap:wrap; row-gap:6px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .metric{padding:14px 0}
+    .metric + .metric{padding-left:0}
+    .metric:nth-child(3){border-left:0; border-top:1px solid var(--rule)}
+    .metric:nth-child(4){border-top:1px solid var(--rule)}
+    .metric b{font-size:28px}
+    .toc{margin:32px -18px 0; padding:0 18px}
+    h2{font-size:17px; margin-top:48px}
+    h2 .gnum{font-size:54px; top:-20px}
+    .card{grid-template-columns:36px 1fr}
+    .card::before{font-size:17px}
+    .top3-list li{grid-template-columns:40px 1fr; gap:0 10px}
+    .top3-list li::before{font-size:19px}
+    .top3-tag{grid-column:2; justify-self:start; margin-top:6px}
+    .lede{font-size:14.5px; padding:14px 16px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <span class="brand-mark">X</span>
+      <div>
+        <h1>值得学习的内容 · 日报</h1>
+        <div class="sub"><span>日报</span><span>{{DATE}}</span><span>采集 {{TIME_RANGE}}</span></div>
+      </div>
+    </div>
+    <div class="src">数据源：{{SOURCES}}</div>
+  </header>
+
+  <div class="stats">
+    <div class="metric"><b>{{N_SAMPLE}}</b><span>去重样本</span></div>
+    <div class="metric"><b>{{N_PICKED}}</b><span>入选条目</span></div>
+    <div class="metric"><b>{{NOISE_PCT}}</b><span>噪音占比</span></div>
+    <div class="metric"><b>{{N_ROUNDS}}</b><span>采集轮次</span></div>
+  </div>
+
+  <section class="top3">
+    <div class="top3-h">今日最值钱的三条<span>时间有限就只看这三条</span></div>
+    <ol class="top3-list">
+      <li><a href="{{T3_URL_1}}" target="_blank">{{T3_TITLE_1}}</a><span class="top3-tag">{{T3_TAG_1}}</span></li>
+      <li><a href="{{T3_URL_2}}" target="_blank">{{T3_TITLE_2}}</a><span class="top3-tag">{{T3_TAG_2}}</span></li>
+      <li><a href="{{T3_URL_3}}" target="_blank">{{T3_TITLE_3}}</a><span class="top3-tag">{{T3_TAG_3}}</span></li>
+    </ol>
+  </section>
+
+  <nav class="toc">
+    <a href="#g1"><b>01</b>{{TOC_1_NAME}}</a>
+    <a href="#g2"><b>02</b>{{TOC_2_NAME}}</a>
+    <a href="#g3"><b>03</b>{{TOC_3_NAME}}</a>
+  </nav>
+
+  <div class="lede"><b>一句话结论：</b>{{LEDE}}</div>
+
+  <h2 id="g1"><span class="gnum">01</span>{{GROUP_TITLE_1}}<span class="tag">{{GROUP_TAG_1}}</span></h2>
+  <p class="secnote">{{GROUP_NOTE_1}}</p>
+
+  <div class="card">
+    <h3><a href="{{CARD_URL}}" target="_blank">{{CARD_TITLE}}</a></h3>
+    <p class="why">{{CARD_WHY}}</p>
+    <div class="meta"><span class="handle">{{CARD_HANDLE}}</span><span class="stat">{{CARD_STAT}}</span><span class="pill {{PILL_CLASS}}">{{CARD_PILL}}</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="{{CARD_URL}}" target="_blank">{{CARD_TITLE}}</a></h3>
+    <p class="why">{{CARD_WHY}}</p>
+    <div class="meta"><span class="handle">{{CARD_HANDLE}}</span><span class="stat">{{CARD_STAT}}</span><span class="pill {{PILL_CLASS}}">{{CARD_PILL}}</span></div>
+  </div>
+
+  <h2 id="g2"><span class="gnum">02</span>{{GROUP_TITLE_2}}<span class="tag">{{GROUP_TAG_2}}</span></h2>
+  <p class="secnote">{{GROUP_NOTE_2}}</p>
+
+  <div class="card">
+    <h3><a href="{{CARD_URL}}" target="_blank">{{CARD_TITLE}}</a></h3>
+    <p class="why">{{CARD_WHY}}</p>
+    <div class="meta"><span class="handle">{{CARD_HANDLE}}</span><span class="stat">{{CARD_STAT}}</span><span class="pill {{PILL_CLASS}}">{{CARD_PILL}}</span></div>
+  </div>
+
+  <h2 id="g3"><span class="gnum">03</span>{{GROUP_TITLE_3}}<span class="tag">{{GROUP_TAG_3}}</span></h2>
+  <p class="secnote">{{GROUP_NOTE_3}}</p>
+
+  <div class="card">
+    <h3><a href="{{CARD_URL}}" target="_blank">{{CARD_TITLE}}</a></h3>
+    <p class="why">{{CARD_WHY}}</p>
+    <div class="meta"><span class="handle">{{CARD_HANDLE}}</span><span class="stat">{{CARD_STAT}}</span><span class="pill {{PILL_CLASS}}">{{CARD_PILL}}</span></div>
+  </div>
+
+  <div class="skip"><b>已被扔掉的噪音（约占样本 {{NOISE_PCT}}）：</b>{{SKIP_TEXT}}</div>
+
+  <footer>{{FOOTER_LIMITS}}</footer>
+
+</div>
+</body>
+</html>

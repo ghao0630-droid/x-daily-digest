@@ -1,0 +1,13 @@
+{
+  "name": "x-daily-digest",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Installable skill that scrapes a logged-in X timeline and renders a filtered HTML daily digest",
+  "type": "module",
+  "engines": {
+    "node": ">=22.20.0"
+  },
+  "scripts": {
+    "verify": "node tools/verify-package.mjs"
+  }
+}

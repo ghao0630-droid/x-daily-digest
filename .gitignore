@@ -1,0 +1,19 @@
+# 抓取中间产物（体积大且是临时的，不要提交）
+*_raw.txt
+*_brief.txt
+posts_*.txt
+all_*.txt
+*.log
+
+# 本地预览与截图
+preview.html
+shot_*.png
+
+# Python
+__pycache__/
+*.pyc
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini

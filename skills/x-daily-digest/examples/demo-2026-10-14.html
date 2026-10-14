@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 值得学习内容日报 · 2026-10-14</title>
+<style>
+  /* ============ editorial skin / brand: International Klein Blue + Yellow ============ */
+  :root{
+    --paper:#f8f9fc;
+    --ink:#0e1526;
+    --ink-2:#525b70;
+    --ink-3:#98a1b5;
+    --rule:#e3e7f1;
+
+    /* brand */
+    --brand:#002fa7;          /* IKB */
+    --brand-deep:#001e6b;
+    --brand-soft:#e6ebf7;
+    --brand-tint:#f2f5fc;
+
+    /* accent */
+    --yellow:#ffd400;
+    --yellow-soft:#fff6cc;
+    --yellow-deep:#8a6a00;
+    --neutral-ink:#8a93a6;
+
+    --serif:Georgia,"Times New Roman","Songti SC","SimSun",serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; color:var(--ink);
+    background-color:var(--paper);
+    background-image:linear-gradient(180deg,#e9eefb 0%,rgba(248,249,252,0) 520px);
+    background-repeat:no-repeat;
+    font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:15px; line-height:1.72; -webkit-font-smoothing:antialiased;
+  }
+  /* double rule: 6px klein blue + 3px yellow */
+  body::before{
+    content:""; display:block; height:9px;
+    background:linear-gradient(180deg,var(--brand) 0 6px,var(--yellow) 6px 9px);
+  }
+  .wrap{
+    max-width:980px; margin:0 auto; padding:0 32px 88px;
+    counter-reset:cardn;
+  }
+
+  /* ---------- masthead ---------- */
+  header{padding:24px 0 0}
+  .brand{display:flex; align-items:flex-start; gap:18px}
+  .brand-mark{
+    width:54px; height:54px; flex:none; border-radius:0;
+    background:var(--brand); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--serif); font-size:27px; font-weight:400; line-height:1;
+    letter-spacing:-1px;
+  }
+  h1{
+    font-size:40px; font-weight:800; letter-spacing:-1.6px;
+    line-height:1.08; margin:0;
+  }
+  .sub{
+    display:flex; align-items:center;
+    font-size:10.5px; letter-spacing:1.5px; color:var(--ink-3);
+    margin-top:12px;
+  }
+  .sub span{padding:0 12px; border-left:1px solid var(--rule)}
+  .sub span:first-child{
+    padding-left:0; border-left:0;
+    color:#fff; background:var(--brand); padding:2px 8px; font-weight:700;
+  }
+  .src{
+    margin-top:20px; padding-left:14px; border-left:2px solid var(--brand);
+    font-size:12px; color:var(--ink-2); line-height:1.7;
+  }
+
+  /* ---------- figures strip ---------- */
+  .stats{
+    display:grid; grid-template-columns:repeat(4,1fr);
+    margin-top:30px;
+    border-top:1px solid var(--brand); border-bottom:1px solid var(--brand);
+  }
+  .metric{padding:16px 0 14px; border-left:1px solid var(--rule)}
+  .metric:first-child{border-left:0}
+  .metric + .metric{padding-left:22px}
+  .metric b{
+    display:block; font-family:var(--serif); font-weight:400;
+    font-size:36px; line-height:1; letter-spacing:-1.5px;
+    font-variant-numeric:tabular-nums; color:var(--brand);
+  }
+  .metric span{
+    display:block; margin-top:8px;
+    font-size:10.5px; letter-spacing:1.3px; color:var(--ink-3);
+  }
+
+  /* ---------- top 3 ---------- */
+  .top3{margin-top:38px}
+  .top3-h{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:11px; font-weight:800; letter-spacing:1.8px;
+    padding-bottom:11px; border-bottom:3px solid var(--yellow);
+  }
+  .top3-h span{font-size:11px; font-weight:400; letter-spacing:.6px; color:var(--ink-3)}
+  .top3-list{margin:0; padding:0; list-style:none; counter-reset:t3}
+  .top3-list li{
+    counter-increment:t3;
+    display:grid; grid-template-columns:54px 1fr auto; align-items:baseline;
+    gap:0 16px; padding:16px 0; border-bottom:1px solid var(--rule);
+  }
+  .top3-list li::before{
+    content:counter(t3,decimal-leading-zero);
+    font-family:var(--serif); font-size:25px; line-height:1;
+    letter-spacing:-1px; color:var(--brand);
+  }
+  .top3-list a{
+    font-size:14.5px; font-weight:600; color:var(--ink); text-decoration:none;
+    letter-spacing:-.1px;
+  }
+  .top3-list a:hover{color:var(--brand)}
+  .top3-tag{
+    justify-self:end; font-size:10px; letter-spacing:.8px; font-weight:700;
+    color:var(--yellow-deep); background:var(--yellow-soft);
+    padding:3px 9px; border:0;
+  }
+
+  /* ---------- sticky section nav ---------- */
+  .toc{
+    position:sticky; top:0; z-index:30;
+    margin:40px -32px 0; padding:0 32px;
+    display:flex; gap:0; overflow-x:auto; scrollbar-width:none;
+    background:rgba(248,249,252,.96);
+    border-top:1px solid var(--brand); border-bottom:1px solid var(--brand);
+  }
+  .toc::-webkit-scrollbar{display:none}
+  .toc a{
+    flex:none; font-size:11.5px; letter-spacing:.3px; color:var(--ink-2);
+    text-decoration:none; padding:12px 18px; white-space:nowrap;
+    border-bottom:2px solid transparent; margin-bottom:-1px; transition:.15s;
+  }
+  .toc a b{
+    font-family:var(--serif); font-weight:400; color:var(--brand);
+    margin-right:7px; font-size:12px;
+  }
+  .toc a:hover{color:var(--ink); border-bottom-color:var(--yellow); background:#fff}
+
+  /* ---------- lede ---------- */
+  .lede{
+    margin:34px 0 0; padding:16px 20px 16px 24px;
+    border-left:3px solid var(--brand);
+    background:var(--brand-tint); border-radius:0; box-shadow:none;
+    font-size:15.5px; line-height:1.88; color:var(--ink-2);
+  }
+  .lede b{color:var(--ink); font-weight:700}
+
+  /* ---------- section heads ---------- */
+  h2{
+    position:relative; display:block;
+    margin:64px 0 0; padding:0 0 13px;
+    border-bottom:2px solid var(--brand);
+    font-size:20px; font-weight:800; letter-spacing:-.4px;
+    scroll-margin-top:52px;
+  }
+  h2 .gnum{
+    position:absolute; right:0; top:-30px;
+    font-family:var(--serif); font-weight:400; font-size:76px;
+    line-height:1; letter-spacing:-4px;
+    color:rgba(0,47,167,.12); pointer-events:none;
+  }
+  h2 .tag{
+    display:inline-block; vertical-align:2px; margin-left:12px;
+    font-size:10px; font-weight:700; letter-spacing:1.2px;
+    padding:3px 9px; border-radius:0;
+    background:var(--brand); color:#fff;
+  }
+  .secnote{
+    font-size:12.5px; line-height:1.8; color:var(--ink-3);
+    margin:14px 0 4px;
+  }
+
+  /* ---------- cards ---------- */
+  .card{
+    counter-increment:cardn;
+    display:grid; grid-template-columns:50px 1fr;
+    padding:19px 0 17px; margin:0;
+    border:0; border-bottom:1px solid var(--rule); border-radius:0;
+    background:transparent; box-shadow:none;
+    transition:box-shadow .18s, background-color .18s;
+  }
+  .card::before{
+    content:counter(cardn,decimal-leading-zero);
+    grid-column:1; grid-row:1;
+    font-family:var(--serif); font-size:22px; line-height:1.35;
+    letter-spacing:-.8px; color:var(--ink-3);
+    transition:color .18s;
+  }
+  .card > *{grid-column:2}
+  .card:has(.p-hot)::before{color:var(--brand)}
+  .card:has(.p-warm)::before{color:#b8912a}
+  .card:has(.p-cool)::before{color:var(--neutral-ink)}
+  .card:hover{box-shadow:inset 3px 0 0 var(--brand); background-color:#fbfcff}
+  .card h3{
+    font-size:15px; font-weight:700; margin:0 0 8px;
+    line-height:1.55; letter-spacing:-.2px; padding:0;
+  }
+  .card h3 a{color:var(--ink); text-decoration:none; border-bottom:1px solid #cfd6e6}
+  .card h3 a:hover{color:var(--brand); border-bottom-color:var(--brand)}
+  .why{font-size:13.5px; color:var(--ink-2); margin:0 0 11px; padding:0; line-height:1.8}
+  .why b{
+    color:var(--ink); font-weight:700;
+    background:linear-gradient(transparent 70%, #ffe89a 70%); padding:0 1px;
+  }
+  .why code{
+    font-family:Consolas,"Liberation Mono",Menlo,monospace;
+    background:#eef1f8; padding:1px 5px; font-size:12px; border-radius:2px;
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:7px 14px; align-items:center;
+    font-size:11.5px; color:var(--ink-3);
+    border-top:0; padding:0;
+  }
+  .handle{color:var(--ink); font-weight:700}
+  .stat{font-variant-numeric:tabular-nums}
+  .pill{
+    font-size:10px; letter-spacing:.7px; font-weight:700;
+    padding:3px 9px; border-radius:0; border:1px solid transparent;
+  }
+  .p-hot{background:var(--brand); color:#fff}
+  .p-warm{background:var(--yellow-soft); color:var(--yellow-deep)}
+  .p-cool{background:#fff; border-color:#ccd3e2; color:var(--neutral-ink)}
+
+  /* ---------- skip / footer ---------- */
+  .skip{
+    margin-top:52px; padding:22px 0 0;
+    border:0; border-top:1px solid var(--ink); border-radius:0;
+    background:transparent; font-size:12.5px; line-height:1.85; color:var(--ink-3);
+  }
+  .skip b{color:var(--ink-2)}
+  footer{
+    margin-top:44px; padding-top:20px;
+    border-top:1px solid var(--brand-soft);
+    font-size:11.5px; line-height:1.9; color:var(--ink-3);
+  }
+  footer code{
+    font-family:Consolas,"Liberation Mono",Menlo,monospace;
+    font-size:11px; color:var(--ink-2);
+  }
+
+  @media (max-width:680px){
+    .wrap{padding:0 18px 64px}
+    h1{font-size:27px; letter-spacing:-.9px}
+    .brand-mark{width:42px; height:42px; font-size:21px}
+    .sub{flex-wrap:wrap; row-gap:6px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .metric{padding:14px 0}
+    .metric + .metric{padding-left:0}
+    .metric:nth-child(3){border-left:0; border-top:1px solid var(--rule)}
+    .metric:nth-child(4){border-top:1px solid var(--rule)}
+    .metric b{font-size:28px}
+    .toc{margin:32px -18px 0; padding:0 18px}
+    h2{font-size:17px; margin-top:48px}
+    h2 .gnum{font-size:54px; top:-20px}
+    .card{grid-template-columns:36px 1fr}
+    .card::before{font-size:17px}
+    .top3-list li{grid-template-columns:40px 1fr; gap:0 10px}
+    .top3-list li::before{font-size:19px}
+    .top3-tag{grid-column:2; justify-self:start; margin-top:6px}
+    .lede{font-size:14.5px; padding:14px 16px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <span class="brand-mark">X</span>
+      <div>
+        <h1>值得学习的内容 · 日报</h1>
+        <div class="sub"><span>日报</span><span>2026.10.14</span><span>采集 20:20–20:25 GMT+8</span></div>
+      </div>
+    </div>
+    <div class="src">数据源：首页推荐流 ×2 轮 + 4 个关键词搜索页（Meta Muse / Grok Bot / Claude Opus 5.5 / Agent Skill）</div>
+  </header>
+
+  <div class="stats">
+    <div class="metric"><b>181</b><span>去重样本</span></div>
+    <div class="metric"><b>35</b><span>入选条目</span></div>
+    <div class="metric"><b>80%</b><span>噪音占比</span></div>
+    <div class="metric"><b>6</b><span>采集轮次</span></div>
+  </div>
+
+  <section class="top3">
+    <div class="top3-h">今日最值钱的三条<span>时间有限就只看这三条</span></div>
+    <ol class="top3-list">
+      <li><a href="https://x.com/Re7_AI/status/2109858567264366627" target="_blank">视频动效的本质就是写代码 —— 理解这点，Flash 模型也能出大片</a><span class="top3-tag">省钱思路</span></li>
+      <li><a href="https://x.com/MindfulReturn/status/2110013413443420504" target="_blank">多 Bot 架构：总控 + 各绑本机 CLI，绕开公网 MCP 和隧道</a><span class="top3-tag">可直接抄</span></li>
+      <li><a href="https://x.com/ai_fengshou/status/2110286992940646901" target="_blank">Vercel Labs 出了 npx skills add —— skill 正在变成插件市场</a><span class="top3-tag">生态级</span></li>
+    </ol>
+  </section>
+
+  <nav class="toc">
+    <a href="#g1"><b>01</b>Meta Muse</a>
+    <a href="#g2"><b>02</b>Grok Bot 与订阅</a>
+    <a href="#g3"><b>03</b>Opus 5.5 生产线</a>
+    <a href="#g4"><b>04</b>Skill 生态</a>
+    <a href="#g5"><b>05</b>产品 / 工程</a>
+  </nav>
+
+  <div class="lede">
+    <b>一句话结论：</b>今天中文区几乎被两条线刷屏——<b>Meta 的 Muse</b>（模型发布已经过去，讨论焦点转向"怎么注册、怎么绑卡、哪张卡还能过"）和 <b>Grok Bot 的订阅大一统</b>（Twitter + Cursor + Grok + Grok Bot 合并成一套 X Subscription）。
+    但真正能拿走复用的是第三条暗线：<b>Claude Opus 5.5 用代码渲染视频</b>这条流水线，已经沉淀出 1300+ 条作品和成规模的公开提示词库，开始有人拿它接单变现。
+    下面按「真能学到东西」重排，噪音已经替你扔掉。
+  </div>
+
+  <h2 id="g1"><span class="gnum">01</span>Meta Muse <span class="tag">今日主战场</span></h2>
+  <p class="secnote">核心事件：Meta 于 10 月 12 日发布 Muse Wonder 系列。今天的增量信息不在"模型好不好"，而在<b>实测速度数据</b>和<b>注册风控的收紧水位</b>——后者对想上手的人是硬门槛。</p>
+
+  <div class="card">
+    <h3><a href="https://x.com/AIatMeta/status/2109691148943999167" target="_blank">Meta 官方发布 Muse Wonder 系列：速度版 + 完整版双线</a></h3>
+    <p class="why">一手信源，确认这是真实发布而非传言。两个版本分工明确：<b>Muse Wonder 主打速度，Muse Wonder Full 是完整版</b>。扎克伯格口径是让 Meta 进入"前沿"梯队——和 OpenAI / Anthropic / Google 最强模型同一档。选型前先看这条，别被二手解读带偏。</p>
+    <div class="meta"><span class="handle">@AIatMeta</span><span class="stat">官方发布</span><span class="pill p-hot">一手信源</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/xueyu1125/status/2110019169496568136" target="_blank">第二波实测：换掉"鹈鹕测试"，Muse Wonder 跑出 201 tps</a></h3>
+    <p class="why">今天最有价值的一条实测。作者意识到<b>鹈鹕测试可能已被模型专门训练过</b>，换成"斑马骑自行车"重测：Muse Wonder <b>201 tps / 42.1 秒</b>，GPT-6.1 Sol <b>36 tps / 22 分 33 秒</b>。方法论本身比结论更值钱——评测用例被污染时，换题是唯一诚实做法。</p>
+    <div class="meta"><span class="handle">@xueyu1125</span><span class="stat">速度量化对比</span><span class="pill p-cool">可复现</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/alexandr_wang/status/2109703458278535245" target="_blank">Alex Wang：每一项技术 benchmark 都与 astra / fable / opus 打平或更好</a></h3>
+    <p class="why">Meta 首席 AI 官原话引用：<b>"on every technical benchmark we ran it was neck and neck or better than astra, fable and opus"</b>，并称 Meta 将赢下消费级 agent。官方口径的自我定位，和第三方实测对照着看才有意义。</p>
+    <div class="meta"><span class="handle">@alexandr_wang</span><span class="stat">官方访谈</span><span class="pill p-hot">一手口径</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/NFT_Chen/status/2110174902305317082" target="_blank">传 Meta 开源 Muse Spark 1.3，Artificial Analysis 榜单 48 分</a></h3>
+    <p class="why">称 Muse Spark 1.3 (max) 拿到 <b>48 分</b>，超过 MiMo-V2.6 Pro、Qwen 3.8 Max、GLM-5.3 的 <b>45 分</b>。若属实，开源榜第一易主。这是转述榜单而非官方公告，<b>建议自行去 Artificial Analysis 核对再下结论</b>。</p>
+    <div class="meta"><span class="handle">@NFT_Chen</span><span class="stat">榜单转述</span><span class="pill p-warm">待核实</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/alin_zone/status/2110320310822015152" target="_blank">Muse 注册风控收紧实测：国内主流外币卡全军覆没</a></h3>
+    <p class="why">今天最新的风控水位。实测被拒：<b>招行 Visa 全币种、中信金貔貅、中行莫奈卡</b>，统一报 <code>Payment is not accepted</code>。目前还能过的只剩 <b>Gate 和 Bitget</b>。准备上车的人先看这条，别白折腾。</p>
+    <div class="meta"><span class="handle">@alin_zone</span><span class="stat">实时实测</span><span class="pill p-warm">风控水位</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/hellokittyold/status/2110342577517895876" target="_blank">绑卡「三一致」原则：账单国家、ZIP、IP 必须全部对齐</a></h3>
+    <p class="why">可复现的实操细节：<b>账单国家填 United States、ZIP 用真实美国邮编（如 97201，别自己编）、IP 全程保持美国</b>。三条对不上 Meta 直接拒，且<b>连扣款都不发起</b>——所以失败时查不到扣款记录，不代表卡有问题。</p>
+    <div class="meta"><span class="handle">@hellokittyold</span><span class="stat">操作细节</span><span class="pill p-cool">可复现</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/Liu_zhongxisn/status/2108554490312061161" target="_blank">把 Muse 接进微信：发消息下任务，结果回传</a></h3>
+    <p class="why">作者跑通的场景是<b>让 Muse 打开 Claude 完成注册流程</b>。这类"agent 反过来操作另一个 AI 产品"的用法，是今天 Muse 讨论里最实用的一类——把它当自动化执行器而不是聊天机器人。</p>
+    <div class="meta"><span class="handle">@Liu_zhongxisn</span><span class="stat">场景实操</span><span class="pill p-cool">可复现</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/op7418/status/2106974366722662786" target="_blank">Muse Gadgets SDK：内置多款 ESP32 固件，刷进去就能用</a></h3>
+    <p class="why">硬件侧的入口。作者用 M5 Stack 的 Stop Watch 做了个小玩具，评价是<b>SDK 很方便，已内置好几个常见 ESP32 设备的固件，直接刷即可</b>。想做 AI 硬件原型的话，这是成本最低的起点。</p>
+    <div class="meta"><span class="handle">@op7418</span><span class="stat">硬件玩法</span><span class="pill p-warm">原型验证</span></div>
+  </div>
+
+  <h2 id="g2"><span class="gnum">02</span>Grok Bot 与 X 订阅大一统 <span class="tag">持续发酵</span></h2>
+  <p class="secnote">这条线的底层变化是：X Premium、Grok、Grok Bot、Cursor 合并成一套订阅，且 SpaceX 会按任务自动挑后端模型。中文区已经把它当"AI 基础设施"在写教程了。</p>
+
+  <div class="card">
+    <h3><a href="https://x.com/elonmusk/status/2107724314451878104" target="_blank">马斯克定调：SpaceX 将按任务选择最佳后端模型</a></h3>
+    <p class="why">整条生态的底层逻辑变了。官方明确后端池包含 <b>Claude Opus 5.5、MidJourney、Suno</b> 等——意味着用户不再需要为每个模型单独付费订阅。<b>这是"多模型路由"第一次被平台级产品做掉</b>。</p>
+    <div class="meta"><span class="handle">@elonmusk</span><span class="stat">7,800 万+ 观看</span><span class="pill p-hot">一手口径</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/op7418/status/2109839549706969259" target="_blank">四合一订阅四档拆解：$8 起，用量按倍数递增</a></h3>
+    <p class="why">把 Twitter + Cursor + Grok Bot + Grok 的合并订阅拆成 4 档：<b>$8（Plus，含 Twitter Premium）、$30（Premium，Plus 的 4 倍用量）</b>及更高档。作者此前一直劝人"再等等"，这次改口说时间到了——是选档的直接依据。</p>
+    <div class="meta"><span class="handle">@op7418</span><span class="stat">订阅拆解</span><span class="pill p-hot">选型依据</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/bot/status/2108609764766908772" target="_blank">官方：Grok Bot 拥有了自己的邮箱</a></h3>
+    <p class="why">Bot 可以用这个邮箱<b>注册服务、替你联系商家、约时间</b>。这是"agent 拥有独立身份"的关键一步——很多产品注册流程卡在"需要一个邮箱"，这一步补上后，端到端自动化的断点少了一个。</p>
+    <div class="meta"><span class="handle">@bot</span><span class="stat">447 万观看</span><span class="pill p-cool">官方更新</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/MindfulReturn/status/2110013413443420504" target="_blank">多 Bot 群聊架构：总控 + 各绑一个本机 CLI 当打手</a></h3>
+    <p class="why">今天最干净的一个架构设计。<b>不用搭公网 MCP、不用内网穿透</b>：Grok Bot 群负责决策/记忆/邮件，本机 Shell 挂 grok / cursor-agent / codex / codebuddy / claude 具体执行。把"编排"和"执行"分层，是绕开网络配置成本最省事的做法。</p>
+    <div class="meta"><span class="handle">@MindfulReturn</span><span class="stat">架构可抄</span><span class="pill p-hot">可直接抄</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/eze_is_1/status/2109850538045264151" target="_blank">10 条实操经验：与 Codex / Claude Code 的区别、长任务唤醒、防休眠</a></h3>
+    <p class="why">系统性最强的一条，覆盖 <b>multi-bot 工作流搭建、长任务跑完自动唤醒、Browser Use、防休眠、省 Token</b>。作者把文字版做成了 8 分钟动画图解——对刚上手的人，这比散落各处的教程省时间。</p>
+    <div class="meta"><span class="handle">@eze_is_1</span><span class="stat">系统总结</span><span class="pill p-hot">入门首选</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/jingran96/status/2110316274802930018" target="_blank">让 Bot 每小时巡检群聊，按价值排序后自动整理进飞书</a></h3>
+    <p class="why">真实的落地工作流，而且作者<b>主动说了翻车部分</b>："grok bot 也有蠢的时候，我正在调教一个管推特的 bot，前面也翻车了。"这种带失败记录的分享，比纯成功案例信息量大得多。</p>
+    <div class="meta"><span class="handle">@jingran96</span><span class="stat">含翻车记录</span><span class="pill p-warm">真实经验</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/Chris62771610/status/2110203945364959614" target="_blank">0.70.2 更新：说需求 → 推荐 Bot 模板 → 一键启动</a></h3>
+    <p class="why">降低门槛的一次产品更新。作者的反应是"我的 usegrokbot.com 是不是可以下线了"——<b>官方把第三方做的"模板/案例站"这件事自己做了</b>，这类平台能力的收编值得留意。</p>
+    <div class="meta"><span class="handle">@Chris62771610</span><span class="stat">产品更新</span><span class="pill p-cool">能力收编</span></div>
+  </div>
+
+  <h2 id="g3"><span class="gnum">03</span>Claude Opus 5.5 内容生产线 <span class="tag">可复用经验</span></h2>
+  <p class="secnote">这条线今天最值得注意：它已经不是"晒效果"，而是<b>成规模的提示词库 + 明确的成本口径 + 可复现的技术条件</b>。核心认知是——视频不是"生成"出来的，是模型写代码渲染出来的。</p>
+
+  <div class="card">
+    <h3><a href="https://x.com/AYi_AInotes/status/2109121659982553156" target="_blank">475 条 Opus 5.5 爆款视频，每条附创作者原始 prompt，免费复制</a></h3>
+    <p class="why">目前最完整的提示词库：<b>475 条视频，一条不落全收，每条都附上创作者当时用的完整 prompt</b>，GitHub 2300+ star，免费。想入这条线的人，从这里抄比从零试快得多。</p>
+    <div class="meta"><span class="handle">@AYi_AInotes</span><span class="stat">475 条 / 2300+ star</span><span class="pill p-hot">提示词库</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/GoSailGlobal/status/2107675558117097905" target="_blank">按收藏数排出的提示词 Top10：只收公开了出处的</a></h3>
+    <p class="why">筛选口径值得学：<b>只收公开了提示词出处的，按收藏数排名</b>，第一名收藏 <b>20,060</b>，第二名 13,027。有出处 = 可验证，这比"我做了个爆款"的晒图靠谱得多。</p>
+    <div class="meta"><span class="handle">@GoSailGlobal</span><span class="stat">Top10 排名</span><span class="pill p-cool">有出处</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/xiaohu/status/2110287968783179922" target="_blank">全程聊天改出来的 SpaceX 发展历程视频，没用任何剪辑软件</a></h3>
+    <p class="why">配音、音乐、动画特效、素材画面<b>全是 Claude 自己去找、自己合成</b>，最后共微调 <b>10 次</b>，但作者说<b>第一版就已经很惊艳</b>。这条最能说明当前能力边界：不是"AI 帮你剪片"，而是"对话即剪辑"。</p>
+    <div class="meta"><span class="handle">@xiaohu</span><span class="stat">全程无剪辑软件</span><span class="pill p-cool">可复现</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/Re7_AI/status/2109858567264366627" target="_blank">拆穿原理：视频动效的本质就是写代码，Flash 模型也能做</a></h3>
+    <p class="why">今天最省钱的一条思路。作者说清楚<b>"模型做视频的本质就是写代码"</b>——既然产出是代码，那就不必非用最贵的模型，Flash 级模型同样能出高质感大片。理解原理之后再选模型，成本能降一个量级。</p>
+    <div class="meta"><span class="handle">@Re7_AI</span><span class="stat">成本优化</span><span class="pill p-hot">方法论</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/NFT_Chen/status/2109420193399357665" target="_blank">雨夜便利店微缩场景：Opus 5.5 + three.js 一轮直出</a></h3>
+    <p class="why">给出了完整的可复现条件：<b>模型 Opus 5.5、框架 three.js、一轮基本直出、第二轮只修穿模</b>，且<b>最便宜会员的 5 小时额度就够搓出一个完整场景</b>。带成本上限和迭代次数的分享，才是能照着做的。</p>
+    <div class="meta"><span class="handle">@NFT_Chen</span><span class="stat">含成本上限</span><span class="pill p-cool">可复现</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/KeWai386772/status/2108143447496679553" target="_blank">YouTube 长视频收益是短视频的 20–30 倍：10 万播放可赚 100–1500 美元</a></h3>
+    <p class="why">少数给出明确变现口径的帖子。<b>一条 10 万播放的视频可赚 100–1500 美元</b>，作者用 Claude Code + Opus 5.5 做了 13 分钟诺贝尔奖科普，称质量达到爆款标准，提示词已分享。做内容的人可以直接拿这个数字算投入产出。</p>
+    <div class="meta"><span class="handle">@KeWai386772</span><span class="stat">变现口径明确</span><span class="pill p-warm">变现参考</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/_guillecasaus/status/2108160812615369011" target="_blank">Anthropic 官方技巧：三个模型分工，用 <code>claude --advisor</code> 启动</a></h3>
+    <p class="why">正规军的省成本做法：<b>Sonnet 5.5、Haiku 5.5、Opus 5.5 各专注自己最擅长的部分</b>，而不是所有活都丢给最贵的模型。配合启动参数 <code>claude --advisor</code>。比民间"薅便宜额度"的路子稳。</p>
+    <div class="meta"><span class="handle">@_guillecasaus</span><span class="stat">官方技巧</span><span class="pill p-cool">官方方案</span></div>
+  </div>
+
+  <h2 id="g4"><span class="gnum">04</span>Skill 生态 <span class="tag">持续发酵</span></h2>
+  <p class="secnote">今天出现了一个标志性事件：Vercel Labs 把 skill 做成了可 <code>npx</code> 安装的开放工具链。skill 正在从"个人收藏的提示词包"变成"agent 的插件市场"。</p>
+
+  <div class="card">
+    <h3><a href="https://x.com/ai_fengshou/status/2110286992940646901" target="_blank">Vercel Labs 出了 <code>npx skills add</code>：一行装进 Claude Code / Codex / Cursor</a></h3>
+    <p class="why">今天 skill 生态最重要的一条。开放工具链，<b>支持 75 种 agent，34.7k star，MIT 开源</b>。作者的评价很准："<b>skill 正在变成 agent 的插件市场</b>"——安装方式标准化之后，分发和治理问题都会跟着变。</p>
+    <div class="meta"><span class="handle">@ai_fengshou</span><span class="stat">34.7k star</span><span class="pill p-hot">生态级变化</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/AlchainHust/status/2109662408554000469" target="_blank">花叔 art-motion 更新「导演」层：3500+ star，35 种画风 + 10 种动画语法</a></h3>
+    <p class="why">有真实结果背书的 skill 案例。<b>35 种画风 + 10 种动画语法</b>，新版解决老版本的"为了动感导致镜头乱推"问题，加了导演层让镜头语言有逻辑。作者自己用它做的科普视频发抖音，<a href="https://x.com/AlchainHust/status/2107757400224596291" target="_blank">5 小时 10 万+ 播放</a>。</p>
+    <div class="meta"><span class="handle">@AlchainHust</span><span class="stat">3500+ star · 10万+ 播放</span><span class="pill p-hot">有结果</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/vista8/status/2109890764050518329" target="_blank">Anatomy Skill：别只安装用，它的规则设计才是重点</a></h3>
+    <p class="why">今天最"元"的一条建议：<b>只安装使用就浪费了，应该学它的长处融合进自己的 Skill</b>。作者点名值得参考的是它在<b>验收、数据、画面元素控制</b>上的规则设计。把别人的 skill 当教材而不只是工具，这个视角很少见。</p>
+    <div class="meta"><span class="handle">@vista8</span><span class="stat">方法论</span><span class="pill p-cool">方法论</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/yupi996/status/2109965873771642930" target="_blank">Hypit：把爆款短视频链接发给 AI，一句话复刻成同款</a></h3>
+    <p class="why">用法极简：<b>把视频链接发给 AI，说"用 Hypit 复刻这个视频"</b>，AI 会把原片拆成一份工作流，画面、字幕、特效跟着台词走；想换解说员或换话题直接打字说。Claude Code / Codex 都能挂。</p>
+    <div class="meta"><span class="handle">@yupi996</span><span class="stat">开源 skill</span><span class="pill p-cool">可直接抄</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/smk7z/status/2108530665738351060" target="_blank">answer-me-with-html：一周 2.4k star，比手写 HTML 快 3 倍、省 7 倍 token</a></h3>
+    <p class="why">少见的把收益量化到倍数的 skill 介绍：<b>比常规手写 HTML 快 3 倍、token 省 7 倍；把文字转成视频快 11.8 倍、省 17.8 倍 token</b>。这类"省 token"型 skill 对长期跑 agent 的人是刚需。</p>
+    <div class="meta"><span class="handle">@smk7z</span><span class="stat">2.4k star / 一周</span><span class="pill p-hot">有数据</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/leo_xiaolei/status/2109982650199060818" target="_blank">sweety-handdraw-video 开源：目前最强手绘视频管线</a></h3>
+    <p class="why">作者称它<b>不是个图新鲜的工具，而是一套拥有独立 AI 能力的完整管线</b>，且 ChatGPT 上完美运行。手绘口播视频这条细分赛道，之前一直靠"PPT 式填色"糊弄，这条值得试。</p>
+    <div class="meta"><span class="handle">@leo_xiaolei</span><span class="stat">新开源</span><span class="pill p-warm">待验证</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/Khazix0918/status/2084919577562255639" target="_blank">「活人感写作」skill：专治 AI 味文字</a></h3>
+    <p class="why">卡兹克的观点很值得记：<b>"写作，好像是 2026 年被 AI 行业忽视得最多的场景"</b>。这三年讨论最多的是怎么去 AI 味，但真正开源的方案很少。跨领域通用，不限于做内容的人。</p>
+    <div class="meta"><span class="handle">@Khazix0918</span><span class="stat">27 万观看</span><span class="pill p-cool">跨领域</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/JackJ29502/status/2108108773072199762" target="_blank">怎么判断一个 skill 的质量高低</a></h3>
+    <p class="why">选 skill 的判据，很实用：<b>用了一个 skill 很久、结果却和预期差很远，既浪费时间又浪费 token</b>——这是绝大多数人踩过的坑。在 skill 数量爆炸之后，"怎么筛"比"有哪些"更值钱。</p>
+    <div class="meta"><span class="handle">@JackJ29502</span><span class="stat">选择判据</span><span class="pill p-cool">判据</span></div>
+  </div>
+
+  <h2 id="g5"><span class="gnum">05</span>产品 / 工程实践 <span class="tag">可复用经验</span></h2>
+  <p class="secnote">不限于 AI 模型，这几条讲的是行业变化和做法，跨领域通用。</p>
+
+  <div class="card">
+    <h3><a href="https://x.com/Weixin_WeChat/status/2110189939245953184" target="_blank">企业微信侧边栏多了个 WorkBuddy：能读工作上下文，像跟同事一样下任务</a></h3>
+    <p class="why">和手头的工具链直接相关。官方描述的能力是<b>用上企微里的工作上下文</b>，例如"结合这个项目的讨论和会议纪要，做一份汇报 PPT"。值得留意的是它把入口放在<b>侧边栏常驻</b>而不是独立应用——这是"agent 变成同事"的产品化落地。</p>
+    <div class="meta"><span class="handle">@Weixin_WeChat</span><span class="stat">官方发布</span><span class="pill p-hot">直接相关</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/AYi_AInotes/status/2110304884234879060" target="_blank">1499 美元的迷你主机本地跑 2350 亿参数模型，对标 4000 美元 AI 盒子</a></h3>
+    <p class="why">苏姿丰在台上单手托起一台<b>饭盒大小、1499 美元</b>的机器，<b>没连数据中心、没调云端接口、没外接显卡坞</b>，当场在本地跑起 2350 亿参数模型。核心是 <b>Ryzen AI Max+ 395</b>——本地推理的性价比拐点可能就在这一代。</p>
+    <div class="meta"><span class="handle">@AYi_AInotes</span><span class="stat">硬件发布</span><span class="pill p-cool">硬件选型</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/interr_x/status/2110230543526957092" target="_blank">TikTok CEO 口径：广告制作成本从 100–1000 美元降到 1–10 美元</a></h3>
+    <p class="why">行业级数字。周受资称<b>绝大多数短剧已开始由 AI 制作</b>，品牌过去要请团队或制作公司，现在只需给字节的 Seedance 模型提供产品图片和参考视频。<b>成本降低 10–100 倍</b>——这是甲方预算会真实变化的那种量级。</p>
+    <div class="meta"><span class="handle">@interr_x</span><span class="stat">行业数据</span><span class="pill p-warm">行业口径</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/op7418/status/2109852753875075242" target="_blank">Anthropic 反蒸馏文章反过来读：哪些操作会被误判成蒸馏</a></h3>
+    <p class="why">思路转得很聪明——官方讲"我们怎么识别蒸馏"，反过来就是"<b>怎么避免被误判</b>"。作者指出<b>很多被封的账号是被系统误认为在做蒸馏</b>，尤其是<b>刚注册完就被快速封禁</b>的那批。用 Claude 的人值得看一眼。</p>
+    <div class="meta"><span class="handle">@op7418</span><span class="stat">7.3 万观看</span><span class="pill p-warm">避坑</span></div>
+  </div>
+
+  <div class="card">
+    <h3><a href="https://x.com/xiax0603/status/2110307157505974483" target="_blank">Anthropic 设立新加坡办事处，与新加坡政府签署 AI 谅解备忘录</a></h3>
+    <p class="why">今天最硬的官方动向。数据点值得记：<b>在 121 国统计口径下，新加坡 Claude 人均使用率排全球第二，实际使用规模是人口理论预期的 6 倍</b>。亚太区的服务能力和合规安排都会跟着变。</p>
+    <div class="meta"><span class="handle">@xiax0603</span><span class="stat">官方公告</span><span class="pill p-cool">官方动向</span></div>
+  </div>
+
+  <div class="skip">
+    <b>已被我扔掉的噪音（约占样本 80%）：</b>
+    16 条明确标注「广告」的推广帖（含单条 5,122 万观看的课程广告、386 万观看的 AI 陪聊、2.5 亿观看的数据中心广告）；政治相关（Trump 帖、黄奇帆留置传闻、库克访华行程）；内娱与擦边（天津武清私密视频传闻、网友玩梗、职场情绪帖）；加密货币晒单与喊单；以及纯情绪宣泄帖（"卧槽 第一次被 AI 视频打动"这类无信息量的感叹）。
+    这些互动量极高（多条 40 万+ 观看），但<b>看完学不到任何可复用的东西</b>。把它们留下只会稀释真正有价值的部分。
+  </div>
+
+  <footer>
+    <b>采集口径与局限</b><br>
+    1. 首页时间线（<code>x.com/home</code>）是<b>个性化推荐流（For You），不是全站热榜</b>。看到什么取决于账号历史兴趣，不同账号同一时间刷新结果完全不同。<br>
+    2. 关键词部分采自 <code>x.com/search?q=Meta Muse / Grok Bot / Claude Opus 5.5 / Agent Skill&amp;f=top</code>，「热门」同样是推荐算法排序，非实时热榜。<br>
+    3. 会混入<b>几个月前的老帖</b>——排序不等于时间序。本次样本里就混进了 Muse 9 月的官方发布帖、花叔 8 月的开源帖等老内容，请注意区分。<br>
+    4. 互动数据为抓取时刻（2026-10-14 20:20–20:25）快照，会持续变化。纯文本抓取，图片/视频内容未纳入分析。<br>
+    5. 标题为我基于原帖正文的概括，<b>非原帖标题</b>；点击均跳转 X 原文。<br>
+    6. 数据源：181 条帖文去重后人工筛选，共选出 35 条。
+  </footer>
+
+</div>
+</body>
+</html>
